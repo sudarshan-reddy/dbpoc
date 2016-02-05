@@ -48,11 +48,11 @@ func (tx *TaxData) Dbcommit() bool {
 }
 
 func (tax *TaxData) EnterTaxDetails (ipTaxName string,
-									 ipTaxEnv string,
-									 ipTaxCity string,
-									 ipTaxState string,
-									 ipTaxCntry string,
-									 ipTaxRate float32) (state bool) {
+ipTaxEnv string,
+ipTaxCity string,
+ipTaxState string,
+ipTaxCntry string,
+ipTaxRate float32) (state bool) {
 	defer func(){
 		if r := recover(); r != nil {
 			state = false	
