@@ -27,14 +27,24 @@ type TaxData struct {
 	taxRate float32
 }
 
+
 func (tx *TaxData) Dbcommit() bool {
 	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
 	DB_USER, DB_PASSWD, DB_NAME)
 	db , err := sql.Open("postgres", dbinfo)
 	checkErr(err)
 	defer db.Close()
-	fmt.Println("Connected")
-	return true
+	if db.Ping() == nil {
+		value, err := db.Query("CREATE TABLE IF NOT EXISTS taxData( id integer, taxName varchar(20), taxEnv varchar(10),taxCity varchar(20), taxState varchar(8), taxCntry varchar(15), taxRate decimal)")
+		checkErr(err)
+		if value == nil {
+			fmt.Println("Value is nil")
+		}
+		fmt.Println("Connected")
+		return true
+	}
+	return false
+
 }
 
 func (tax *TaxData) EnterTaxDetails (ipTaxName string,
