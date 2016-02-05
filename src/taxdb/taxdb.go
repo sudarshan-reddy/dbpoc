@@ -35,7 +35,14 @@ func (tx *TaxData) Dbcommit() bool {
 	checkErr(err)
 	defer db.Close()
 	if db.Ping() == nil {
-		value, err := db.Query("CREATE TABLE IF NOT EXISTS taxData( id integer, taxName varchar(20), taxEnv varchar(10),taxCity varchar(20), taxState varchar(8), taxCntry varchar(15), taxRate decimal)")
+		value, err := db.Query(`CREATE TABLE IF NOT EXISTS taxData( 
+			id integer, 
+			taxName varchar(20), 
+			taxEnv varchar(10),
+			taxCity varchar(20), 
+			taxState varchar(8), 
+			taxCntry varchar(15), 
+			taxRate decimal)`)
 		checkErr(err)
 		if value == nil {
 			fmt.Println("Value is nil")
@@ -48,11 +55,11 @@ func (tx *TaxData) Dbcommit() bool {
 }
 
 func (tax *TaxData) EnterTaxDetails (ipTaxName string,
-				ipTaxEnv string,
-				ipTaxCity string,
-				ipTaxState string,
-				ipTaxCntry string,
-				ipTaxRate float32) (state bool) {
+						ipTaxEnv string,
+						ipTaxCity string,
+						ipTaxState string,
+						ipTaxCntry string,
+						ipTaxRate float32) (state bool) {
 	defer func(){
 		if r := recover(); r != nil {
 			state = false	
