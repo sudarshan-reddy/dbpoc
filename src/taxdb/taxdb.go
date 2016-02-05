@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"database/sql"
 	_ "github.com/lib/pq"
+	"strings"
 )
 
 const (
@@ -15,6 +16,17 @@ const (
 func checkErr(err error) {
 	if err != nil {
 		panic(err)	
+	}
+}
+
+func getString(name string) (string, bool) {
+	fmt.Println("Please enter" , name)	
+	var input string
+	_, err := fmt.Scanf("%s", &input)
+	if err != nil {
+		return "" , false	
+	}else{
+		return input , true
 	}
 }
 
@@ -53,23 +65,30 @@ func (tx *TaxData) Dbcommit() bool {
 
 }
 
-func (tax *TaxData) EnterTaxDetails (ipTaxName string,
-				ipTaxEnv string,
-				ipTaxCity string,
-				ipTaxState string,
-				ipTaxCntry string,
-				ipTaxRate float32) (state bool) {
+func (tax *TaxData) EnterTaxDetails () (state bool) {
 	defer func(){
 		if r := recover(); r != nil {
 			state = false	
 		}
 	} ()
-	tax.taxName    =  ipTaxName 
-	tax.taxEnv     =  ipTaxEnv 
-	tax.taxCity    =  ipTaxCity 
-	tax.taxState   =  ipTaxState
-	tax.taxCntry   =  ipTaxCntry
-	tax.taxRate    =  ipTaxRate 
+
+	taxvals := []string{"Name,String",
+						"Environment,String",
+						"City,String",
+						"State,String",
+						"Country,String",
+						"Rate,Float32"}
+
+	for _, vals := range taxvals {
+		result := strings.Split(vals, ",")
+		if result[1] == "String" {
+			input, err := getString(result[0])
+			if err == false {
+				fmt.Println(input)
+			}
+		}
+	}
+	
 	state = true
 	return state
 								 

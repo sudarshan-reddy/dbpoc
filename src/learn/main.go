@@ -6,6 +6,6 @@ import  (
 
 func main() {
 	var testval taxdb.TaxData
-	//testval.EnterTaxDetails()
+	testval.EnterTaxDetails()
 	testval.Dbcommit()
 }
