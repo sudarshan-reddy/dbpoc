@@ -1,8 +1,11 @@
 package main
 
-import  "taxdb"
+import  (
+	"taxdb"
+)
 
 func main() {
 	var testval taxdb.TaxData
-	testval.Dbcommit()	
+	//testval.EnterTaxDetails()
+	testval.Dbcommit()
 }

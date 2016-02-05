@@ -47,7 +47,6 @@ func (tx *TaxData) Dbcommit() bool {
 		if value == nil {
 			fmt.Println("Value is nil")
 		}
-		fmt.Println("Connected")
 		return true
 	}
 	return false
@@ -74,8 +73,4 @@ func (tax *TaxData) EnterTaxDetails (ipTaxName string,
 	state = true
 	return state
 								 
-}
-
-func (tax TaxData) commit () bool {
-	return true
 }
