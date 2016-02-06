@@ -35,7 +35,7 @@ func (tx *TaxData) Dbcommit() bool {
 	checkErr(err)
 	defer db.Close()
 	if db.Ping() == nil {
-		value, err := db.Query(`CREATE TABLE IF NOT EXISTS taxData( 
+		db.Query(`CREATE TABLE IF NOT EXISTS taxData( 
 			id integer, 
 			taxName varchar(20), 
 			taxEnv varchar(10),
@@ -44,9 +44,11 @@ func (tx *TaxData) Dbcommit() bool {
 			taxCntry varchar(15), 
 			taxRate decimal)`)
 		checkErr(err)
-		if value == nil {
-			fmt.Println("Value is nil")
-		}
+		insertQuery := fmt.Sprintf(`INSERT INTO taxData (taxName, taxEnv, taxCity,
+		taxState, taxCntry, taxRate)
+		VALUES ('%s', '%s', '%s', '%s', '%s', '%f')`,tx.TaxName,tx.TaxEnv,tx.TaxCity,tx.TaxState,tx.TaxCntry,tx.TaxRate)
+		value , err := db.Query(insertQuery)
+		fmt.Println(value, err)
 		return true
 	}
 	return false

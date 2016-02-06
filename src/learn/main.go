@@ -3,6 +3,8 @@ package main
 import  (
 	"taxdb"
 	"fmt"
+	"bufio"
+	"os"
 )
 
 func getString(name string) (string, bool) {
@@ -30,18 +32,18 @@ func getFloat(name string) (float32 , bool) {
 
 func main() {
 	var testval taxdb.TaxData
-	fmt.Println("Enter Tax Name")			
-	fmt.Scanf("%s", testval.TaxName)
-	fmt.Println("Enter Tax Environment")			
-	fmt.Scanf("%s", testval.TaxEnv)
-	fmt.Println("Enter Tax City")			
-	fmt.Scanf("%s", testval.TaxCity)
-	fmt.Println("Enter Tax State")			
-	fmt.Scanf("%s", testval.TaxState)
-	fmt.Println("Enter Tax Country")			
-	fmt.Scanf("%s", testval.TaxCntry)
-	fmt.Println("Enter Tax Rate")			
-	fmt.Scanf("%b", testval.TaxRate)
-
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Enter Tax Name: ")			
+	testval.TaxName, _ = reader.ReadString('\n')
+	fmt.Print("Enter Tax Environment: ")			
+	testval.TaxEnv, _ = reader.ReadString('\n')
+	fmt.Print("Enter Tax City: ")			
+	testval.TaxCity, _ = reader.ReadString('\n')
+	fmt.Print("Enter Tax State: ")			
+	testval.TaxState, _ = reader.ReadString('\n')
+	fmt.Print("Enter Tax Country: ")			
+	testval.TaxCntry, _ = reader.ReadString('\n')
+	fmt.Print("Enter Tax Rate: ")			
+	fmt.Scanf("%b", &testval.TaxRate)
 	testval.Dbcommit()
 }
