@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"database/sql"
 	_ "github.com/lib/pq"
-	"strings"
 )
 
 const (
@@ -19,24 +18,13 @@ func checkErr(err error) {
 	}
 }
 
-func getString(name string) (string, bool) {
-	fmt.Println("Please enter" , name)	
-	var input string
-	_, err := fmt.Scanf("%s", &input)
-	if err != nil {
-		return "" , false	
-	}else{
-		return input , true
-	}
-}
-
 type TaxData struct {
-	taxName string
-	taxEnv string
-	taxCity string
-	taxState string
-	taxCntry string
-	taxRate float32
+	TaxName string
+	TaxEnv string
+	TaxCity string
+	TaxState string
+	TaxCntry string
+	TaxRate float32
 }
 
 
@@ -65,31 +53,3 @@ func (tx *TaxData) Dbcommit() bool {
 
 }
 
-func (tax *TaxData) EnterTaxDetails () (state bool) {
-	defer func(){
-		if r := recover(); r != nil {
-			state = false	
-		}
-	} ()
-
-	taxvals := []string{"Name,String",
-						"Environment,String",
-						"City,String",
-						"State,String",
-						"Country,String",
-						"Rate,Float32"}
-
-	for _, vals := range taxvals {
-		result := strings.Split(vals, ",")
-		if result[1] == "String" {
-			input, err := getString(result[0])
-			if err == false {
-				fmt.Println(input)
-			}
-		}
-	}
-	
-	state = true
-	return state
-								 
-}
