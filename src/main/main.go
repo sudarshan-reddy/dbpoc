@@ -5,6 +5,8 @@ import  (
 	"fmt"
 	"bufio"
 	"os"
+	"io"
+	"net/http"
 )
 
 func getString(name string) (string, bool) {
@@ -30,20 +32,40 @@ func getFloat(name string) (float32 , bool) {
 
 }
 
-func main() {
-	var testval taxdb.TaxData
+func getInputFromCmdLine(db *taxdb.TaxData) bool {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter Tax Name: ")			
-	testval.TaxName, _ = reader.ReadString('\n')
+	db.TaxName, _ = reader.ReadString('\n')
 	fmt.Print("Enter Tax Environment: ")			
-	testval.TaxEnv, _ = reader.ReadString('\n')
+	db.TaxEnv, _ = reader.ReadString('\n')
 	fmt.Print("Enter Tax City: ")			
-	testval.TaxCity, _ = reader.ReadString('\n')
+	db.TaxCity, _ = reader.ReadString('\n')
 	fmt.Print("Enter Tax State: ")			
-	testval.TaxState, _ = reader.ReadString('\n')
+	db.TaxState, _ = reader.ReadString('\n')
 	fmt.Print("Enter Tax Country: ")			
-	testval.TaxCntry, _ = reader.ReadString('\n')
+	db.TaxCntry, _ = reader.ReadString('\n')
 	fmt.Print("Enter Tax Rate: ")			
-	fmt.Scanf("%b", &testval.TaxRate)
+	fmt.Scanf("%b", &db.TaxRate)
+	return true
+
+}
+
+func ipform(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w , "Testing")
+}
+
+func getInputFromServer(db *taxdb.TaxData) bool {
+
+	fmt.Println("Server online @ http://localhost:8001")
+	http.HandleFunc("/", ipform)	
+	http.ListenAndServe(":8001", nil)
+	return true
+}
+
+func main() {
+	var testval taxdb.TaxData
+	//getInputFromCmdLine(&testval) 
+	getInputFromServer(&testval)
 	testval.Dbcommit()
+
 }
